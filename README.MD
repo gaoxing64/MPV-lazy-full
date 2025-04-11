@@ -19,7 +19,7 @@ MPV-Lazy 是一个为 MPV 播放器打造的懒人包，集成了丰富的预设
 
 ## 快速开始
 
-1. 从 [Releases](https://github.com/hooke007/MPV_lazy/releases) 页面下载最新版本
+1. 从 [Releases](https://github.com/gaoxing64/MPV-lazy-full/releases/tag/mpv) 页面下载最新版本
 2. 解压到任意位置
 3. 运行 `mpv.exe` 开始使用
 
