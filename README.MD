@@ -72,7 +72,7 @@ MPV-Lazy 提供了丰富的快捷键配置，主要分为以下几类：
 
 - `input_uosc.conf`：快捷键配置
 - `mpv.conf`：MPV主配置
-- `script-opts`：脚本选项配置
+- `script`：脚本选项配置
 
 ## 自定义
 
