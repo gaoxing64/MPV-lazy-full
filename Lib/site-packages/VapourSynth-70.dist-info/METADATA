@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: VapourSynth
+Version: 70
+Summary: A frameserver for the 21st century
+Home-page: https://www.vapoursynth.com/
+Download-URL: https://github.com/vapoursynth/vapoursynth
+Author: Fredrik Mellbin
+Author-email: fredrik.mellbin@gmail.com
+License: LGPL 2.1 or later
+Platform: All
+License-File: COPYING.LESSER
+
+A modern replacement for Avisynth
