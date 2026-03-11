@@ -102,18 +102,11 @@ portable_config/
 
 ### 安装
 
-1. **下载 mpv**
-   - Windows: [mpv 官网](https://mpv.io/installation/) 或 [shinchiro 构建](https://sourceforge.net/projects/mpv-player-windows/)
-   - 推荐使用**便携版**（portable）
+1. **下载完整便携包**
+   - 从本仓库的 [Releases](https://github.com/gaoxing64/MPV-lazy-full/releases) 下载最新版便携包
+   - 解压到任意位置即可使用
 
-2. **安装配置**
-   ```bash
-   # 将整个 portable_config 目录复制到 mpv 安装目录
-   # Windows 示例：
-   # 复制到 mpv.exe 同级目录
-   ```
-
-3. **可选依赖**
+2. **可选依赖**（按需安装）
    - **thumbfast** - 缩略图预览（强烈推荐）
    - **yt-dlp** - YouTube 质量选择
    - **ffmpeg** - 字幕导出、视频裁剪等功能
