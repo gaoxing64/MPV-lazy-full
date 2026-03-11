@@ -15,18 +15,18 @@
 ## ✨ 主要特性
 
 ### 🎨 用户界面
+
 - **uosc** - 现代化极简 OSD 界面，支持：
-  -  proximity-based 元素显示（鼠标靠近时显示）
+  - proximity-based 元素显示（鼠标靠近时显示）
   - 可最小化的时间线进度条
   - 缩略图预览（需配合 thumbfast）
   - 可自定义的轨道/章节/播放列表菜单
   - 音量/速度控制条
 
 ### 🎬 弹幕功能
+
 - **多源弹幕支持**
   - 弹弹 Play API（默认）
-  - 哔哩哔哩弹幕
-  - 巴哈姆特弹幕
   - 自定义多个 API 服务器
 - **弹幕管理**
   - 弹幕来源切换菜单
@@ -43,6 +43,7 @@
   - 历史记录记忆
 
 ### 🎯 播放增强
+
 - **智能跳过** - 自动检测并跳过片头片尾（chapterskip）
 - **智能快进** - 长按加速、字幕检测限速（evafast）
 - **自动加载** - 自动加载目录中的系列文件到播放列表
@@ -51,6 +52,7 @@
 - **字幕工具** - 射手网字幕下载、AI 字幕生成
 
 ### 🖼️ 视频处理
+
 - **着色器支持**（来自 mpv_PlayKit）：
   - **Anime4K** - 动漫视频超分辨率
   - **RAISR** - Intel 机器学习放大算法
@@ -62,6 +64,7 @@
   - 更多专业着色器...
 
 ### 🌐 网络功能
+
 - **TorrServer** - 种子流媒体播放支持
 - **WebUI** - 浏览器远程控制界面
 - **SponsorBlock** - YouTube/B 站赞助片段跳过
@@ -212,6 +215,7 @@ glsl-shaders="~~/shaders/Anime4K/Anime4K_Denoise_Bilateral_Mean.glsl:~~/shaders/
 ## 🎨 着色器推荐
 
 ### 动漫视频
+
 ```ini
 # 基础超分
 glsl-shaders="~~/shaders/Anime4K/Anime4K_Upscale_Denoise_x2.glsl"
@@ -221,6 +225,7 @@ glsl-shaders="~~/shaders/SSim/SSimSuperRes.glsl:~~/shaders/RAISR/ravu_r3.glsl"
 ```
 
 ### 实拍视频
+
 ```ini
 # 锐化增强
 glsl-shaders="~~/shaders/USM/unsharp_masking.glsl"
@@ -230,6 +235,7 @@ glsl-shaders="~~/shaders/nlmeans/nlmeans.glsl"
 ```
 
 ### 老视频修复
+
 ```ini
 # 去交错 + 超分
 glsl-shaders="~~/shaders/deint/deint_swa.glsl:~~/shaders/Anime4K/Anime4K_Restore_CNN_VL.glsl"
@@ -240,19 +246,23 @@ glsl-shaders="~~/shaders/deint/deint_swa.glsl:~~/shaders/Anime4K/Anime4K_Restore
 ### 弹幕高级配置
 
 #### 多 API 源配置
+
 ```ini
 # 优先级从高到低排列
 api_servers=https://api.dandanplay.net,https://your-api.com,https://backup-api.com
 ```
 
 #### 弹幕来源切换
+
 在 uosc 控制栏添加来源切换按钮：
+
 ```ini
 # uosc.conf
 controls=...,command:comment:script-message open_danmaku_source_menu?选择弹幕来源,...
 ```
 
 #### 弹幕预匹配
+
 ```ini
 # 开启后菜单响应更快
 autoload_danmaku_matches=yes
@@ -280,22 +290,26 @@ deband=yes
 ## 🐛 常见问题
 
 ### 弹幕不显示
+
 1. 检查 `uosc_danmaku.conf` 中 API 配置是否正确
 2. 确认网络可以访问 API 服务器
 3. 按 `CTRL+D` 手动搜索弹幕
 4. 检查弹幕开关（按 `J` 切换）
 
 ### 界面卡顿
+
 1. 在 `mpv.conf` 中添加 `video-sync=display-resample`
 2. 禁用 uosc 动画：`uosc.conf` 设置 `animation_enable=no`
 3. 减少时间线缩略图缓存
 
 ### 着色器不生效
+
 1. 确认 mpv 使用 `gpu` 或 `gpu-next` 输出
 2. 检查着色器路径是否正确
 3. 禁用硬件解码或使用 `*-copy` 模式
 
 ### 字幕下载失败
+
 1. 检查 `sub-assrt.conf` 中 API Token 是否有效
 2. 确认网络可以访问 assrt.net
 3. 尝试手动搜索关键词
@@ -311,6 +325,7 @@ deband=yes
 ## 📄 许可证
 
 本项目整合的组件遵循各自原有的开源许可证：
+
 - mpv-config: MIT License
 - uosc_danmaku: MIT License
 - mpv_PlayKit 着色器：MIT License
@@ -318,6 +333,7 @@ deband=yes
 ## 🙏 致谢
 
 感谢以下项目的作者和维护者：
+
 - [@dyphire](https://github.com/dyphire) - mpv-config 主配置
 - [@Loukyuu1120](https://github.com/Loukyuu1120) - uosc_danmaku 弹幕系统
 - [@hooke007](https://github.com/hooke007) - mpv_PlayKit 着色器包
