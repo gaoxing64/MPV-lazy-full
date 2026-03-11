@@ -9,7 +9,7 @@
 | 组件 | 来源 | 说明 |
 |------|------|------|
 | **主配置** | [dyphire/mpv-config](https://github.com/dyphire/mpv-config.git) | 核心配置文件、脚本管理器 |
-| **弹幕系统** | [Loukyuu1120/uosc_danmaku](https://github.com/Loukyuu1120/uosc_danmaku) | 多源弹幕支持（B 站、巴哈姆特等） |
+| **弹幕系统** | [Loukyuu1120/uosc_danmaku](https://github.com/Loukyuu1120/uosc_danmaku) | 新增 api_servers 配置
 | **着色器包** | [hooke007/mpv_PlayKit](https://github.com/hooke007/mpv_PlayKit) | 视频增强着色器集合 |
 
 ## ✨ 主要特性
@@ -27,7 +27,7 @@
   - 弹弹 Play API（默认）
   - 哔哩哔哩弹幕
   - 巴哈姆特弹幕
-  - 自定义 API 服务器列表
+  - 自定义多个 API 服务器
 - **弹幕管理**
   - 弹幕来源切换菜单
   - 弹幕开关控制
@@ -302,18 +302,17 @@ deband=yes
 
 ## 📚 参考链接
 
-- [MPV 官方文档](https://mpv.io/manual/master/)
+- [MPV Lazy文档](https://github.com/hooke007/mpv_PlayKit/wiki)
 - [uosc 文档](https://github.com/tomasklaen/uosc)
 - [uosc_danmaku 文档](https://github.com/Loukyuu1120/uosc_danmaku)
-- [mpv_PlayKit 着色器](https://github.com/hooke007/mpv_PlayKit)
+- [mpv_PlayKit 着色器](https://github.com/hooke007/mpv_PlayKit/wiki/4_GLSL)
 - [dyphire/mpv-config](https://github.com/dyphire/mpv-config)
-- [弹弹 Play API](https://github.com/kaedei/dandanplay-libraryindex)
 
 ## 📄 许可证
 
 本项目整合的组件遵循各自原有的开源许可证：
 - mpv-config: MIT License
-- uosc_danmaku: MIT License  
+- uosc_danmaku: MIT License
 - mpv_PlayKit 着色器：MIT License
 
 ## 🙏 致谢
@@ -326,5 +325,3 @@ deband=yes
 - 所有贡献者和社区成员
 
 ---
-
-**最后更新**: 2026 年 2 月
