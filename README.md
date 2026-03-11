@@ -6,9 +6,8 @@
 
 ---
 
-## 🚀 开始使用
+## 开始使用
 
-### 新手入门（必读）
 
 | 文档 | 内容 | 适合人群 |
 |------|------|----------|
@@ -163,16 +162,16 @@ glsl-shaders="~~/shaders/SSim/SSimSuperRes.glsl"
 
 ## ❓ 常见问题
 
-**Q: 弹幕不显示？**  
+**Q: 弹幕不显示？**
 A: 检查 `uosc_danmaku.conf` API 配置，按 `J` 确认弹幕开关已打开。
 
-**Q: 字幕下载失败？**  
+**Q: 字幕下载失败？**
 A: 需在 `sub_assrt.conf` 填入 [射手网](https://assrt.net) API Token。
 
-**Q: 为什么不自动连播？**  
+**Q: 为什么不自动连播？**
 A: 检查 `autoload.conf` 中 `disabled=no` 和 `videos=yes`。
 
-**Q: 界面卡顿？**  
+**Q: 界面卡顿？**
 A: 在 `uosc.conf` 设置 `animation_enable=no` 禁用动画。
 
 **更多问题**：[📖 快速开始指南 - 常见问题](scripts/快速开始.md#-常见问题)
