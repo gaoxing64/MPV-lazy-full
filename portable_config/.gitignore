@@ -1,0 +1,11 @@
+*.log
+*.xml
+*.txt
+config.json
+
+cache/
+state/
+files/
+playlists/
+
+scripts/webtorrent.js

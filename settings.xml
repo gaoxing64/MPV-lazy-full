@@ -1,0 +1,5 @@
+<settings>
+  <arch>x86_64-v3</arch>
+  <autodelete>true</autodelete>
+  <getffmpeg>false</getffmpeg>
+</settings>
