@@ -1,7 +1,7 @@
 local msg = require('mp.msg')
 local utils = require("mp.utils")
 
-local repo = "Tony15246/uosc_danmaku"
+local repo = "Loukyuu1120/uosc_danmaku"
 local zip_file = utils.join_path(os.getenv("TEMP") or "/tmp/", "uosc_danmaku.zip")
 
 local local_version = VERSION or "0.0.0"
@@ -10,7 +10,7 @@ local platform = mp.get_property("platform")
 local function version_greater(v1, v2)
     local function parse(ver)
         local a, b, c = ver:match("v?(%d+)%.(%d+)%.(%d+)")
-        return tonumber(a), tonumber(b), tonumber(c)
+        return tonumber(a) or 0, tonumber(b) or 0, tonumber(c) or 0
     end
     local a1, a2, a3 = parse(v1)
     local b1, b2, b3 = parse(v2)
@@ -122,6 +122,7 @@ local function unzip_overwrite(zip_file)
 end
 
 function check_for_update()
+    msg.info("正在检查更新...")
     local latest_version, download_url = get_latest_release(repo)
     if not latest_version or not download_url then
         show_message("❌ 无法获取最新版本信息")
@@ -152,12 +153,12 @@ function check_for_update()
         return
     end
 
-    show_message("📦 下载完成，开始解压覆盖...")
-    msg.info("📦 下载完成，开始解压覆盖...")
+    show_message("📦 下载完成，开始安装...")
+    msg.info("📦 下载完成，开始安装...")
 
     if unzip_overwrite(zip_file) then
         os.remove(zip_file)
-        show_message("✅ 更新成功！请重启 mpv 以应用更新，当前版本为：" .. latest_version)
+        show_message("✅ 更新成功！请重启 mpv")
         msg.info("✅ 更新成功，当前版本为：" .. latest_version)
     else
         os.remove(zip_file)

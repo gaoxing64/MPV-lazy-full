@@ -2,8 +2,10 @@ local opt = require("mp.options")
 
 -- 选项
 options = {
-    -- 指定弹幕服务器地址，自定义服务需兼容 dandanplay 的 api
+    -- 单个服务器地址（保留，用于向后兼容或单服务器情况）
     api_server = "https://api.dandanplay.net",
+    -- 多个服务器地址，用于并发请求
+    api_servers = "",
     -- 指定 b 站和爱腾优的弹幕获取的兜底服务器地址，主要用于获取非动画弹幕
     -- 服务器可以自托管：https://github.com/lyz05/danmaku
     fallback_server = "https://fc.lyz05.cn",
@@ -15,6 +17,10 @@ options = {
     auto_load = false,
     autoload_local_danmaku = false,
     autoload_for_url = false,
+    -- 弹幕加载完成后开始自动匹配所有API，默认启用
+    autoload_danmaku_matches = true,
+    -- 下载部分url视频文件用于hash计算，默认启用
+    hash_for_url = true,
     save_danmaku = false,
     user_agent = "mpv_danmaku/1.0",
     proxy = "",
@@ -26,6 +32,8 @@ options = {
     merge_tolerance = -1,
     -- 指定弹幕关联历史记录文件的路径，支持绝对路径和相对路径
     history_path = "~~/danmaku-history.json",
+    -- 指定匹配结果缓存文件的路径，支持绝对路径和相对路径
+    match_cache_path = "~~/uosc_danmaku_match_cache.json",
     open_search_danmaku_menu_key = "Ctrl+d",
     show_danmaku_keyboard_key = "j",
     -- 中文简繁转换。0-不转换，1-转换为简体，2-转换为繁体
@@ -36,7 +44,7 @@ options = {
     fixtime = 5,
     --字体
     fontname = "sans-serif",
-    --字体大小 
+    --字体大小
     fontsize = 50,
     --字体阴影
     shadow = 0,
@@ -62,7 +70,7 @@ options = {
     -- 自定义标题解析中的额外替换规则，内容格式为 JSON 字符串，替换模式为 lua 的 string.gsub 函数
     --! 注意：由于 mpv 的 lua 版本限制，自定义规则只支持形如 %n 的捕获组写法，即示例用法，不支持直接替换字符的写法
     title_replace = [[
-       [{ 
+       [{
            "rules": [{ "^〔(.-)〕": "%1"},{ "^.*《(.-)》": "%1" }],
        }]
     ]],

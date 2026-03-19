@@ -1,14 +1,12 @@
-local unpack = unpack or table.unpack
-
 -- Clean up media name
 local function clean_name(name)
     return name:gsub("^%[.-%]", " ")
            :gsub("^%(.-%)", " ")
            :gsub("[_%.%[%]]", " ")
            :gsub("第%s*%d+%s*季", "")
-           :gsub("第%s*%d+%s*部", "")
+           :gsub("第%s*%d+%s*部([%s%p]|$)", "%1")
            :gsub("第[一二三四五六七八九十]+季", "")
-           :gsub("第[一二三四五六七八九十]+部", "")
+           :gsub("第%s*[一二三四五六七八九十]+%s*部([%s%p]|$)", "%1")
            :gsub("^%s*(.-)%s*$", "%1")
            :gsub("[!@#%.%?%+%-%%&*_=,/~`]+$", "")
 end

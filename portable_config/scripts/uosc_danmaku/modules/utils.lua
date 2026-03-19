@@ -1,5 +1,9 @@
 local utils = require("mp.utils")
-local unpack = unpack or table.unpack
+
+-- 简单的英文检测：检查是否包含中文字符
+function is_english(text)
+    return not string.match(text, "[\228-\233][\128-\191].")
+end
 
 -- from http://lua-users.org/wiki/LuaUnicode
 local UTF8_PATTERN = '[%z\1-\127\194-\244][\128-\191]*'
@@ -338,6 +342,10 @@ function contains_any(tab, val)
     return false
 end
 
+function string.startswith(str, start)
+    return str:sub(1, #start) == start
+end
+
 --读history 和 写history
 function read_file(file_path)
     local file = io.open(file_path, "r") -- 打开文件，"r"表示只读模式
@@ -365,14 +373,31 @@ function title_replace(title)
             end
         end
     end
+
+    if title and title ~= "" then
+        -- 去重复标题段（前半段 + 后半段重复处理）
+        local left, right = title:match("^(.*)%s-%-%s-(.*)$")
+        if left and right then
+            left = left:gsub("^%s*(.-)%s*$", "%1")
+            right = right:gsub("^%s*(.-)%s*$", "%1")
+
+            if left:find(right, 1, true) then
+                title = left           -- 如果右段包含在左段中 → 删除右段
+            else
+                title = left .. " - " .. right
+            end
+        end
+
+        -- 去多余空格
+        title = title:gsub("%s+", " "):gsub("^%s*(.-)%s*$", "%1")
+    end
+
     return title
 end
 
 function write_json_file(file_path, data)
     local file = io.open(file_path, "w")
-    if not file then
-        return
-    end
+    if not (file and data) then return end
     file:write(utils.format_json(data)) -- 将 Lua 表转换为 JSON 并写入
     file:close()
 end
@@ -435,7 +460,7 @@ function get_episode_number(filename, fname)
     end
 
     local thin_space = string.char(0xE2, 0x80, 0x89)
-    filename = filename:gsub(thin_space, " ")
+    filename = (filename or ""):gsub(thin_space, " ")
 
     local title = format_filename(filename)
     if title then
@@ -515,17 +540,21 @@ function parse_title()
 
         local directory = get_parent_directory(path)
         local dir, title = utils.split_path(directory:sub(1, -2))
-        if title:lower():match("^%s*seasons?%s*%d+%s*$") or title:lower():match("^%s*specials?%s*$") or title:match("^%s*SPs?%s*$")
-        or title:match("^%s*O[VAD]+s?%s*$") or title:match("^%s*第.-[季部]+%s*$") then
+        if title:lower():match("^%s*seasons?%s*%d+%s*$")
+            or title:lower():match("^%s*specials?%s*$")
+            or title:match("^%s*SPs?%s*$")
+            or title:match("^%s*O[VAD]+s?%s*$")
+            or title:match("^%s*第.-[季部]+%s*$") then
             directory, title = utils.split_path(dir:sub(1, -2))
         end
         title = title
-                :gsub(thin_space, " ")
-                :gsub("%[.-%]", "")
-                :gsub("^%s*%(%d+.?%d*.?%d*%)", "")
-                :gsub("%(%d+.?%d*.?%d*%)%s*$", "")
-                :gsub("[%._]", " ")
-                :gsub("^%s*(.-)%s*$", "%1")
+            :gsub(thin_space, " ")
+            :gsub("%[.-%]", "")
+            :gsub("^%s*%(%d+.?%d*.?%d*%)", "")
+            :gsub("%(%d+.?%d*.?%d*%)%s*$", "")
+            :gsub("[%._]", " ")
+            :gsub("^%s*(.-)%s*$", "%1")
+
         return title_replace(title)
     end
 
@@ -553,6 +582,53 @@ function parse_title()
     end
 
     return title_replace(title), season, episode
+end
+
+function extract_season(title)
+    if not title or title == "" then return 1 end
+    title = title:match("^%s*(.-)%s*$") or title
+    local cleaned_title = title:gsub("%(%s*%d+%s*%)", "")
+                      :gsub("（%s*%d+%s*）", "")
+                      :gsub("%[%s*%d+%s*%]", "")
+                      :gsub("【%s*%d+%s*】", "")
+                      :gsub("<%s*%d+%s*>", "")
+                      :gsub("{%s*%d+%s*}", "")
+    cleaned_title = cleaned_title:gsub("%f[%D]%d%d%d%d%f[%D]", " ")
+
+    local s = cleaned_title:match("第%s*([一二三四五六七八九十]+)%s*季")
+           or cleaned_title:match("第%s*([一二三四五六七八九十]+)%s*期")
+           or cleaned_title:match("第%s*(%d+)%s*季")
+           or cleaned_title:match("第%s*(%d+)%s*期")
+           or cleaned_title:match("Season%s*(%d+)")
+           or cleaned_title:match("S%s*(%d+)")
+           or cleaned_title:match("%s*(%d+)%s*%(%d+%)")
+           or cleaned_title:match("%s*(%d+)%s*（%d+）")
+           or cleaned_title:match("^%S+%s*(%d)%s*")
+
+    if s then
+        if tonumber(s) then
+            return tonumber(s)
+        else
+            return chinese_to_number(s)
+        end
+    end
+
+    return 1
+end
+
+function extract_part(title)
+    title = title:lower()
+    local p = title:match("part%.?%s*(%d+)")
+    if p then return tonumber(p) end
+    local cn = title:match("第%s*([%d一二三四五六七八九十]+)%s*部分")
+    if cn then
+        if tonumber(cn) then
+            return tonumber(cn)
+        else
+            return chinese_to_number(cn)
+        end
+    end
+    return 1
 end
 
 local CHINESE_NUM_MAP = {
@@ -649,9 +725,10 @@ function call_cmd_async(args, callback)
         name = 'subprocess',
         capture_stderr = true,
         capture_stdout = true,
-        playback_only = true,
+        playback_only = false,
         args = args,
     }, function(success, result, error)
+        async_running = false
         if not success or not result or result.status ~= 0 then
             local exit_code = (result and result.status or 'unknown')
             local message = error or (result and result.stdout .. result.stderr) or ''
@@ -666,4 +743,131 @@ function call_cmd_async(args, callback)
     return function()
         mp.abort_async_command(abort_signal)
     end
+end
+
+------------------------------------------------
+-- 并发请求管理器 (优化版：支持提前返回)
+------------------------------------------------
+ConcurrentManager = {
+    active_requests = 0,
+    max_concurrent = 6,
+    pending_requests = {},
+    results = {},      -- 按 server 归档 (全部收集)
+    results_flat = {}, -- 按 index 归档 (优先级判断)
+    finished = false,
+    total_expected = 0,
+    mode = "all"       -- 默认为 'all' (等待所有)，可切换为 'priority'
+}
+
+function ConcurrentManager:new()
+    local o = {
+        active_requests = 0,
+        max_concurrent = 6,
+        pending_requests = {},
+        results = {},
+        results_flat = {},
+        final_callback = nil,
+        finished = false,
+        validator = nil,
+        mode = "all"
+    }
+    setmetatable(o, self)
+    self.__index = self
+    return o
+end
+
+function ConcurrentManager:wait_priority(total_count, validator, callback)
+    self.mode = "priority"
+    self.total_expected = total_count
+    self.validator = validator
+    self.final_callback = callback
+    self:check_completion()
+end
+
+function ConcurrentManager:wait_all(callback)
+    self.mode = "all"
+    self.final_callback = callback
+    self:check_completion()
+end
+
+-- 检查是否满足提前结束的条件
+function ConcurrentManager:check_completion()
+    if self.finished then return end
+
+    if self.mode == "priority" then
+        -- === 优先级模式逻辑 ===
+        for i = 1, self.total_expected do
+            local res = self.results_flat[i]
+            if res == nil then return end -- 高优先级还在跑，等待
+
+            if self.validator and self.validator(res) then
+                self.finished = true
+                if self.final_callback then
+                    self.final_callback({res}) -- 只返回选中的结果
+                    self.final_callback = nil
+                end
+                return
+            end
+        end
+        -- 如果没有提前返回，检查是否全部跑完
+        if self.active_requests == 0 and #self.pending_requests == 0 then
+            self.finished = true
+            if self.final_callback then
+                local all_results = {}
+                for i = 1, self.total_expected do
+                    if self.results_flat[i] then table.insert(all_results, self.results_flat[i]) end
+                end
+                self.final_callback(all_results)
+                self.final_callback = nil
+            end
+        end
+
+    else
+        -- === 收集模式逻辑 (wait_all) ===
+        if self.active_requests == 0 and #self.pending_requests == 0 and self.final_callback then
+            local callback = self.final_callback
+            self.final_callback = nil
+            self.finished = true
+            callback()
+        end
+    end
+end
+
+function ConcurrentManager:start_request(server, key, request_func)
+    if self.finished then return end
+    if self.active_requests >= self.max_concurrent then
+        table.insert(self.pending_requests, {server = server, key = key, func = request_func})
+        return
+    end
+    self:do_request(server, key, request_func)
+end
+
+function ConcurrentManager:do_request(server, key, request_func)
+    self.active_requests = self.active_requests + 1
+    request_func(function(result)
+        if self.finished then
+            self.active_requests = self.active_requests - 1
+            return
+        end
+
+        if not result.server then result.server = server end
+        result.index = key
+
+        -- 存入 results (兼容 get_all_servers_matches 读取 results[server])
+        if not self.results[server] then self.results[server] = {} end
+        self.results[server][key] = result
+
+        -- 存入 flat (用于优先级排序)
+        self.results_flat[key] = result
+
+        self.active_requests = self.active_requests - 1
+
+        -- 每次请求结束都检查
+        self:check_completion()
+
+        if not self.finished and #self.pending_requests > 0 and self.active_requests < self.max_concurrent then
+            local next_request = table.remove(self.pending_requests, 1)
+            self:do_request(next_request.server, next_request.key, next_request.func)
+        end
+    end)
 end
