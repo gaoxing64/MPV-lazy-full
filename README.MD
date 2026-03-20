@@ -107,23 +107,6 @@ portable_config/
 - **HDR 处理**：根据 HDR 信息自动适配输出参数
 - **设备状态**：根据窗口状态及音频配置进行参数调整
 
-## 客户端兼容性
-
-### 推荐的 MPV 客户端
-
-- [shinchiro 版 mpv](https://github.com/shinchiro/mpv-winbuild-cmake) - Windows 平台知名版本
-- [zhongfly mpv](https://github.com/zhongfly/mpv-winbuild) - 每日构建版本
-- [dyphire mpv](https://github.com/dyphire/mpv-winbuild) - 基于修改版 mpv 构建
-
-### 相关前端
-
-- **mpv.net** - 比较成熟的 mpv/libmpv 前端
-- **umpv** - 单实例模式插件
-
-### 外部集成
-
-- [mpv-handler](https://github.com/akiirui/mpv-handler) - 浏览器集成播放方案
-
 ## 界面预览
 
 ![播放界面预览1](https://cdn.jsdelivr.net/gh/dyphire/PicGo/img/2023/11/03/image-20231103224421000.png)
@@ -139,11 +122,11 @@ portable_config/
 
 ## 许可证说明
 
-- 本项目主要整合了多种开源脚本和着色器
+- 本项目主要整合了多种开源脚本和着色器，主要来源于 [hooke007/mpv_PlayKit](https://github.com/hooke007/mpv_PlayKit) 仓库，以及 [LumeCraft-Labs/K7sfunc](https://github.com/LumeCraft-Labs/K7sfunc) 仓库
 - 每个组件的许可证信息通常在其源文件内部注明
 - 项目整体按照原作者 dyphire 的许可证约定执行
 
 ## 原始项目参考
 
-**原作者**：dyphire  
+**原作者**：dyphire
 **原仓库**：[dyphire/mpv-config](https://github.com/dyphire/mpv-config)
