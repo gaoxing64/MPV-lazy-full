@@ -113,7 +113,7 @@ portable_config/
 ### 特色脚本
 
 - `uosc`：现代化用户界面
-- `uosc_danmaku`：弹弹Play弹幕系统，支持多API源切换与弹幕来源选择菜单
+- `uosc_danmaku`：[Loukyuu1120 版本](https://github.com/Loukyuu1120/uosc_danmaku) - 弹弹Play弹幕系统，支持多API源切换与弹幕来源选择菜单（原版来自 [tomasklaen/uosc_danmaku](https://github.com/tomasklaen/uosc_danmaku)）
 - `simple-history`：播放历史管理
 - `sub-assrt`：在线字幕下载
 - `autosubsync`：音频字幕同步
