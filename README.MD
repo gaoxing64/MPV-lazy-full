@@ -4,34 +4,17 @@
 
 ## 项目介绍
 
-本仓库为 Windows 下 [mpv](https://github.com/mpv-player/mpv) 播放器提供的配置方案，适用于追求高质量视频播放体验的用户。包含了详细的视频、音频、字幕、着色器、界面配置，以及丰富的脚本扩展功能。
-
-### 特色功能
-
-- **高质量视频渲染**：支持 HDR 映射、多种缩放算法、抖动处理等高级特性
-- **全面的解码支持**：包括硬解、软解以及多种解码器配置
-- **丰富的着色器系统**：集成大量高性能的着色器，支持 AI 超分、降噪等
-- **智能条件配置**：根据不同视频特性(分辨率、格式、HDR等)自动应用相应配置
-- **完善的脚本生态**：集成了众多第三方脚本，提供浏览器、字幕、播放列表等扩展功能
+这是一个适用于 Windows 的高质量 [mpv](https://github.com/mpv-player/mpv) 播放器配置方案。包含专业的视频渲染、音频处理、字幕支持和丰富的脚本扩展功能。
 
 ## 配置结构
 
 ```
 portable_config/
 ├── scripts/              # 第三方脚本 (.lua)
-│   ├── uosc/            # 现代化界面控制器
-│   ├── file-browser/    # 文件浏览器
-│   ├── playlistmanager/ # 播放列表管理器
-│   ├── sub-assrt/       # 字幕下载脚本
-│   └── etc...           # 其他脚本
 ├── script-opts/          # 脚本配置文件 (.conf)
 ├── script-modules/       # 脚本模块
 ├── osc-style/            # OSC主题
 ├── shaders/              # GLSL视频着色器
-│   ├── Anime4K/         # Anime4K系列着色器
-│   ├── igv/             # IGV着色器
-│   ├── ravu/            # Ravu放大算法着色器
-│   └── etc...           # 其他着色器
 ├── vs/                   # VapourSynth脚本
 ├── fonts/                # 字体目录
 ├── icc/                  # ICC色彩配置文件目录
@@ -44,44 +27,17 @@ portable_config/
 └── README.md            # 说明文档
 ```
 
-## 安装方式
-
-### 方法一：便携配置模式（推荐）
-
-1. 将 `portable_config` 文件夹放在 `mpv.exe` 所在目录下
-2. 配置会在便携模式下自动生效，并覆盖全局设置
-
-### 方法二：全局配置模式
-
-1. 将配置放在 mpv 的默认配置路径 `%APPDATA%/mpv/`
-2. 重启 mpv 即可生效
-
-**注意**：自行编辑配置文件时，编码格式应为 UTF-8，换行符为 Unix 风格，否则 mpv 可能无法识别。
-
 ## 主要配置特性
-
-### 视频渲染配置
-
-- 使用 gpu-next 作为默认视频输出驱动
-- 支持 Direct3D 11, Vulkan, OpenGL 图形API
-- 硬件加速配置，支持 D3D11VA, NVDEC 等硬件解码
-- 高级缩放算法（ewa_lanczos、ewa_hanning等）
-- 专业的 HDR tone mapping 设置
-- 多种去色带、抗锯齿选项
 
 ### 音频配置
 
-- WACAPI 输出驱动（Windows平台推荐）
-- 多声道音频支持
-- 音速调整与音高校正
-- 软件音效处理
+- WACAPI 输出驱动（Windows平台推荐），支持多声道音频
+- 音速调整与音高校正，软件音效处理
 
 ### 字幕配置
 
-- 多语言支持（中文、日文等）
-- 字幕编码处理（自动、GB18030等）
-- 图形字幕渲染（PGS、VobSub等）
-- 强大的 ASS 字幕处理器
+- 多语言支持（中文、日文等）和多格式字幕渲染
+- 智能编码处理和强大的 ASS 字幕处理器
 
 ### 界面配置
 
@@ -91,51 +47,65 @@ portable_config/
 
 ## 着色器系统
 
-项目集成的着色器支持：
+项目集成了大量高质量的 GLSL 着色器，主要来源于 [hooke007/mpv_PlayKit](https://github.com/hooke007/mpv_PlayKit) 仓库，包括：
 
-- **超分辨率**：使用 Anime4K, FSRCNNX, RAVU, NNEDI3 等算法
-- **降噪**：各种高级降噪着色器
+- **超分辨率**：Anime4K, FSRCNNX, RAVU, NNEDI3, ArtCNN, CuNNy, ESRGAN, ACNet, AiUpscale 等
+- **抗锯齿**：AA 系列抗锯齿着色器
+- **降噪**：nlmeans, guided 等高级降噪着色器
+- **锐化**：Adaptive_sharpen, USM, WarpSharp 等锐化着色器
+- **色彩处理**：CfL, LUT, color 等色彩处理着色器
 - **细节增强**：SSimSuperRes 用于细节保持
-- **色度升频**：KrigBilateral 提供高级色彩升频
-- **抗振铃**：减少图像放大时的振铃效应
+- **色度升频**：KrigBilateral 优质色度升频算法
+- **其他**：Deband, deint, RAISR, MagicKernel 等实用着色器
+
+详细使用说明请参考：[GLSL Wiki](https://github.com/hooke007/mpv_PlayKit/wiki/4_GLSL)
+
+## VapourSynth 脚本
+
+项目集成了基于 [LumeCraft-Labs/K7sfunc](https://github.com/LumeCraft-Labs/K7sfunc) 的 VapourSynth 视频处理脚本（位于 `vs/` 目录），这是一个为 mpv 特向优化的 VS 包装器，支持：
+
+- **格式控制**：FMT_CHANGE, FMT_CTRL, FPS_CHANGE, FPS_CTRL 等格式转换模块
+- **超分辨率**：ACNET_STD, ARTCNN_NV, CUGAN_NV, EDI_US_STD, NGU_HQ 等AI放大算法
+- **运动补偿（补帧）**：MVT_LQ, MVT_MQ, DRBA, RIFE, SVP 等多种补帧算法
+- **去块降噪**：DPIR, BILA, BM3D, CCD, DFTT, FFT3D, NLM 等降噪算法
+- **其它处理**：CSC_UV, DEBAND, DEINT 等图像处理模块
+- **混合功能**：MIX 系列组合模块
+
+详细使用说明请参考：[K7sfunc Wiki](https://github.com/hooke007/mpv_PlayKit/wiki/3_K7sfunc)
 
 ## 脚本功能
 
-主要集成功能包括：
+### 主要功能特性
 
 - **文件管理**：集成文件浏览器与播放列表管理器
 - **字幕处理**：下载、同步、AI生成字幕
 - **历史记录**：播放记录管理与书签功能
-- **质量选择**：YouTube-DL 视频质量选择器
-- **智能裁剪**：动态黑边去除功能
-- **音频同步**：自动音频同步功能
+- **实用工具**：YouTube-DL 选择器、智能裁剪、音频同步等功能
 
 ### 特色脚本
 
 - `uosc`：现代化用户界面
-- `uosc_danmaku`：[Loukyuu1120 版本](https://github.com/Loukyuu1120/uosc_danmaku) - 弹弹Play弹幕系统，支持多API源切换与弹幕来源选择菜单（原版来自 [tomasklaen/uosc_danmaku](https://github.com/tomasklaen/uosc_danmaku)）
+- `uosc_danmaku`：弹弹Play弹幕系统（[Loukyuu1120 版本](https://github.com/Loukyuu1120/uosc_danmaku)），支持多弹幕源切换与弹幕池选择菜单
 - `simple-history`：播放历史管理
+- `playlistmanager`：播放列表管理
 - `sub-assrt`：在线字幕下载
 - `autosubsync`：音频字幕同步
-- `smartcopypaste`：剪切板功能扩展
-- `dynamic-crop`：自动黑边裁剪
+- `file-browser`：文件浏览器
 
 ## 使用技巧
 
-1. **播放控制**：使用 `hjkl` 快捷键进行基本播放控制
-2. **画面调整**：使用鼠标滚轮调整音量/亮度
-3. **字幕操作**：`j/k/v` 切换字幕轨及开关
-4. **视频滤镜**：`CTRL+数字` 快速切换着色器
-5. **配置切换**：`ALT+数字` 应用预设配置组
+- **播放控制**：使用 `hjkl` 快捷键进行基本播放控制
+- **字幕操作**：`j/k/v` 切换字幕轨及开关
+- **视频滤镜**：`CTRL+数字` 快速切换着色器
+- **配置切换**：`ALT+数字` 应用预设配置组
 
 ## 自定义配置
 
-本配置使用了大量的条件配置组（Profiles），可根据不同情况进行定制：
+配置使用了智能的条件配置组，可根据不同情况进行自动定制：
 
-- **分辨率识别**：针对 SD/HD/4K 内容优化配置
-- **HDR 处理**：自动识别并应用 HDR 或 HDR-PASS 参数
-- **音频设备**：根据音频通道数自动调整处理
-- **窗口状态**：根据全屏、窗口化、最小化状态自动调整
+- **分辨率自适应**：针对 SD/HD/4K 内容应用优化配置
+- **HDR 处理**：根据 HDR 信息自动适配输出参数
+- **设备状态**：根据窗口状态及音频配置进行参数调整
 
 ## 客户端兼容性
 
@@ -143,18 +113,18 @@ portable_config/
 
 - [shinchiro 版 mpv](https://github.com/shinchiro/mpv-winbuild-cmake) - Windows 平台知名版本
 - [zhongfly mpv](https://github.com/zhongfly/mpv-winbuild) - 每日构建版本
-- [dyphire mpv](https://github.com/dyphire/mpv-winbuild) - 基于修改版 mpv 的构建
+- [dyphire mpv](https://github.com/dyphire/mpv-winbuild) - 基于修改版 mpv 构建
 
 ### 相关前端
 
-- **mpv.net** - Windows 下流行的 libmpv GUI 前端
+- **mpv.net** - 比较成熟的 mpv/libmpv 前端
 - **umpv** - 单实例模式插件
 
 ### 外部集成
 
-- [mpv-handler](https://github.com/akiirui/mpv-handler) - 浏览器集成播放
+- [mpv-handler](https://github.com/akiirui/mpv-handler) - 浏览器集成播放方案
 
-## 预览图
+## 界面预览
 
 ![播放界面预览1](https://cdn.jsdelivr.net/gh/dyphire/PicGo/img/2023/11/03/image-20231103224421000.png)
 
@@ -162,17 +132,10 @@ portable_config/
 
 ![播放界面预览3](https://cdn.jsdelivr.net/gh/dyphire/PicGo/img/2023/11/03/image-20231103224557019.png)
 
-## 维护与同步
-
-- 本项目的脚本通过 `manager.lua` 和 `manager.json` 自动管理更新
-- 包含来自 GitHub 和 Gist 的多个开源项目
-- 定期维护以保持功能更新和 bug 修复
-
 ## 技术参考
 
 - [mpv 官方手册](https://mpv.io/manual/master/)
 - [hooke007 配置手册](https://hooke007.github.io/mpv-lazy/mpv.html)
-- [mpv 中国社区](https://github.com/hooke007/mpv_doc-CN)
 
 ## 许可证说明
 
@@ -180,9 +143,7 @@ portable_config/
 - 每个组件的许可证信息通常在其源文件内部注明
 - 项目整体按照原作者 dyphire 的许可证约定执行
 
-## 更新日志
+## 原始项目参考
 
-此配置基于原作者的持续更新维护，包含大量高级设置和优化方案，适合对视频播放质量有高要求的专业用户使用。
-
-**原作者**：dyphire
+**原作者**：dyphire  
 **原仓库**：[dyphire/mpv-config](https://github.com/dyphire/mpv-config)
