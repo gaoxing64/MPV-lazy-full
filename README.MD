@@ -20,30 +20,9 @@ portable_config/
 ├── icc/                  # ICC色彩配置文件目录
 ├── cache/                # 缓存目录
 ├── files/                # 文件输出目录
-├── mpv.conf             # 主配置文件
-├── input.conf           # 键位绑定配置
-├── menu.conf            # 菜单配置
-├── manager.json         # 脚本管理器源配置
-└── README.md            # 说明文档
+├── mpv.conf              # 主配置文件
+├── input.conf            # 键位绑定配置
 ```
-
-## 主要配置特性
-
-### 音频配置
-
-- WACAPI 输出驱动（Windows平台推荐），支持多声道音频
-- 音速调整与音高校正，软件音效处理
-
-### 字幕配置
-
-- 多语言支持（中文、日文等）和多格式字幕渲染
-- 智能编码处理和强大的 ASS 字幕处理器
-
-### 界面配置
-
-- 禁用了原生 OSC（On-Screen Controller）
-- 基于 uosc 的现代化界面（位于 scripts/uosc/）
-- 高度定制化 OSD 信息
 
 ## 着色器系统
 
@@ -62,14 +41,31 @@ portable_config/
 
 ## VapourSynth 脚本
 
-项目集成了基于 [LumeCraft-Labs/K7sfunc](https://github.com/LumeCraft-Labs/K7sfunc) 的 VapourSynth 视频处理脚本（位于 `vs/` 目录），这是一个为 mpv 特向优化的 VS 包装器，支持：
+项目集成了基于 [LumeCraft-Labs/K7sfunc](https://github.com/LumeCraft-Labs/K7sfunc) 的 VapourSynth 视频处理脚本（位于 `portable_config/vs/` 目录），这是一个为 mpv 特向优化的 VS 包装器。
 
-- **格式控制**：FMT_CHANGE, FMT_CTRL, FPS_CHANGE, FPS_CTRL 等格式转换模块
-- **超分辨率**：ACNET_STD, ARTCNN_NV, CUGAN_NV, EDI_US_STD, NGU_HQ 等AI放大算法
-- **运动补偿（补帧）**：MVT_LQ, MVT_MQ, DRBA, RIFE, SVP 等多种补帧算法
-- **去块降噪**：DPIR, BILA, BM3D, CCD, DFTT, FFT3D, NLM 等降噪算法
-- **其它处理**：CSC_UV, DEBAND, DEINT 等图像处理模块
-- **混合功能**：MIX 系列组合模块
+### 已集成的脚本
+
+#### 运动补偿（补帧）
+- `MEMC_DRBA_DML.vpy` - DRBA 补帧（DX12 显卡专用）
+- `MEMC_DRBA_NV.vpy` - DRBA 补帧（N 卡专用）
+- `MEMC_MVT_LQ.vpy` - mvtools 倍帧（一般开销）
+- `MEMC_RIFE_DML.vpy` - RIFE 补帧（DX12 显卡专用）
+- `MEMC_RIFE_NV.vpy` - RIFE 补帧（N 卡专用）
+- `MEMC_RIFE_STD.vpy` - RIFE 补帧（通用版）
+- `MEMC_SVP_PRO.vpy` - SVP 补帧（简化版）
+
+#### 超分辨率
+- `SR_ARTCNN_NV.vpy` - ArtCNN 放大（N 卡专用）
+
+#### 降噪处理
+- `NR_BM3D_NV.vpy` - BM3D 降噪（N 卡专用）
+- `NR_CCD_STD.vpy` - CCD 降噪（降低彩噪）
+
+#### 混合功能
+- `MIX_UAI_DML.vpy` - AI 放大模型（DX12 显卡专用）
+- `MIX_UAI_MIGX.vpy` - AI 放大模型（RDNA 显卡专用）
+- `MIX_UAI_NV_TRT.vpy` - AI 放大模型（RTX N 卡专用）
+
 
 详细使用说明请参考：[K7sfunc Wiki](https://github.com/hooke007/mpv_PlayKit/wiki/3_K7sfunc)
 
@@ -80,7 +76,7 @@ portable_config/
 - **文件管理**：集成文件浏览器与播放列表管理器
 - **字幕处理**：下载、同步、AI生成字幕
 - **历史记录**：播放记录管理与书签功能
-- **实用工具**：YouTube-DL 选择器、智能裁剪、音频同步等功能
+- **实用工具**：yt-dlp 选择器、智能裁剪、音频同步等功能
 
 ### 特色脚本
 
@@ -92,12 +88,6 @@ portable_config/
 - `autosubsync`：音频字幕同步
 - `file-browser`：文件浏览器
 
-## 使用技巧
-
-- **播放控制**：使用 `hjkl` 快捷键进行基本播放控制
-- **字幕操作**：`j/k/v` 切换字幕轨及开关
-- **视频滤镜**：`CTRL+数字` 快速切换着色器
-- **配置切换**：`ALT+数字` 应用预设配置组
 
 ## 自定义配置
 
@@ -109,11 +99,11 @@ portable_config/
 
 ## 界面预览
 
-![播放界面预览1](https://cdn.jsdelivr.net/gh/dyphire/PicGo/img/2023/11/03/image-20231103224421000.png)
+![播放界面预览1](assets\danmu.png)
 
-![播放界面预览2](https://cdn.jsdelivr.net/gh/dyphire/PicGo/img/2023/11/03/image-20231103224540075.png)
+![播放界面预览2](assets\glsl.png)
 
-![播放界面预览3](https://cdn.jsdelivr.net/gh/dyphire/PicGo/img/2023/11/03/image-20231103224557019.png)
+![播放界面预览3](assets\VapourSynth.png)
 
 ## 技术参考
 
@@ -124,7 +114,6 @@ portable_config/
 
 - 本项目主要整合了多种开源脚本和着色器，主要来源于 [hooke007/mpv_PlayKit](https://github.com/hooke007/mpv_PlayKit) 仓库，以及 [LumeCraft-Labs/K7sfunc](https://github.com/LumeCraft-Labs/K7sfunc) 仓库
 - 每个组件的许可证信息通常在其源文件内部注明
-- 项目整体按照原作者 dyphire 的许可证约定执行
 
 ## 原始项目参考
 
