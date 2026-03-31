@@ -99,11 +99,11 @@ portable_config/
 
 ## 界面预览
 
-![播放界面预览1](assets\danmu.png)
+![播放界面预览1](assets/danmu.png)
 
-![播放界面预览2](assets\glsl.png)
+![播放界面预览2](assets/glsl.png)
 
-![播放界面预览3](assets\VapourSynth.png)
+![播放界面预览3](assets/VapourSynth.png)
 
 ## 技术参考
 
